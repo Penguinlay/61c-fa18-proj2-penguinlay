@@ -18,14 +18,16 @@
 #include "utils.h"
 
 // Absolute Displacement
-float ad(int dx, int dy, int md) {
+float ad(int dx, int dy) {
     return sqrt(dx * dx + dy * dy);
 }
 
 // Squared Euclidean Distance (SED)
 float sed(float a, float b) {
-    if (a >= b) return (a - b) * (a - b);
-    return (b - a) * (b - a);
+    // if (a >= b) return (a - b) * (a - b);
+    // return (b - a) * (b - a);
+	int diff = a - b;
+	return diff * diff;
 }
 
 // 2D -> 1D
@@ -66,10 +68,10 @@ void calc_depth_optimized(float *dm, float *l, float *r, int w, int h, int fw, i
             dm[i] = 0;
             continue;
         }
-        // Initialize minimum SED to maximum possible SED.
-        minSED = UINT_MAX;
-        // Initialize minimum ND to maximum possible bitmap pixel value.
-        minND = FLT_MAX;
+        // Initialize minimum SED to -1 flag.
+        minSED = -1;
+        // Initialize minimum ND to -1 flag.
+        minND = -1;
         // For each potential right image feature, ...
         // Note: Here, using 2D coordinate of feature center's pixel.
         for (rfx = x - md; rfx <= x + md; rfx++) {
@@ -90,7 +92,7 @@ void calc_depth_optimized(float *dm, float *l, float *r, int w, int h, int fw, i
                         curSED += sed(l[get1D(x + ho, y + vo, w)], r[get1D(rfx + ho, rfy + vo, w)]);
                     }
                 }
-                curND = ad(rfx - x, rfy - y, md);
+                curND = ad(rfx - x, rfy - y);
                 // If current SED is smaller than previous minimum SED, ...
                 if (curSED < minSED) {
                     minSED = curSED;
