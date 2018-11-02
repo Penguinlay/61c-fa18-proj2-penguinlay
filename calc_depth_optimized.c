@@ -20,6 +20,11 @@
 
 // My code didn't pass the given test. Going back to given code and gonna work from there.
 
+// Displacement Square
+float ads(int dx, int dy) {
+    return dx * dx + dy * dy;
+}
+
 float ad(int dx, int dy) {
     return sqrt(dx * dx + dy * dy);
 }
@@ -58,7 +63,7 @@ void calc_depth_optimized(float *dm, float *l, float *r, int w, int h, int fw, i
                             squared_diff += sed(l[left_y * w + left_x], r[right_y * w + right_x]);
                         }
                     }
-                    if (min_diff == -1 || squared_diff < min_diff || (squared_diff == min_diff && ad(dx, dy) < ad(min_dx, min_dy))) {
+                    if (min_diff == -1 || squared_diff < min_diff || (squared_diff == min_diff && ads(dx, dy) < ads(min_dx, min_dy))) {
                         min_diff = squared_diff;
                         min_dx = dx;
                         min_dy = dy;
